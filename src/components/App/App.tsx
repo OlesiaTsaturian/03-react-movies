@@ -22,13 +22,13 @@ export default function App() {
   };
 
   const closeModal = () => {
-    setMovie([]);
     setIsModalOpen(false);
     setSelectedMovie(null);
   };
 
   const handleSearch = async (value: string) => {
     try {
+      setMovie([]);
       setIsLoading(true);
       setIsError(false);
       const data = await fetchMovies(value);
