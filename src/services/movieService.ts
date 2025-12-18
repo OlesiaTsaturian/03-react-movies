@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { Movie, MovieHttpResponse } from "../types/movie";
+import type { Movie } from "../types/movie";
 
 const myTokken = import.meta.env.VITE_TMDB_TOKEN;
 
@@ -10,6 +10,10 @@ const api = axios.create({
     Authorization: `Bearer ${myTokken}`,
   },
 });
+
+interface MovieHttpResponse {
+  results: Movie[];
+}
 
 export const fetchMovies = async (value: string): Promise<Movie[]> => {
   const res = await api.get<MovieHttpResponse>("/search/movie", {

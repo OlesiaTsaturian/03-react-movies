@@ -10,32 +10,30 @@ import { fetchMovies } from "../../services/movieService";
 import MovieModal from "../MovieModal/MovieModal";
 
 export default function App() {
-  const [movie, setMovie] = useState<Movie[]>([]);
+  const [movies, setMovies] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
   const openModal = (movie: Movie) => {
     setSelectedMovie(movie);
-    setIsModalOpen(true);
   };
 
   const closeModal = () => {
-    setIsModalOpen(false);
     setSelectedMovie(null);
   };
 
   const handleSearch = async (value: string) => {
     try {
-      setMovie([]);
+      setMovies([]);
       setIsLoading(true);
       setIsError(false);
       const data = await fetchMovies(value);
       if (data.length === 0) {
         toast.error("No movies found for your request.");
       }
-      setMovie(data);
+      setMovies(data);
     } catch {
       setIsError(true);
     } finally {
@@ -46,11 +44,11 @@ export default function App() {
   return (
     <>
       <Toaster />
-      <SearchBar onSumit={handleSearch} />
+      <SearchBar onSubmit={handleSearch} />
       {isLoading && <Loader />}
       {isError && <ErrorMessage />}
-      {movie.length > 0 && <MovieGrid movies={movie} onSelect={openModal} />}
-      {isModalOpen && selectedMovie && (
+      {movies.length > 0 && <MovieGrid movies={movies} onSelect={openModal} />}
+      {selectedMovie && (
         <MovieModal movie={selectedMovie} onClose={closeModal} />
       )}
     </>
